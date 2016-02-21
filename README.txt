@@ -1,13 +1,19 @@
-Installer: http://MrFeinberg.com/haikufinder-1.1.zip
+Files: http://MrFeinberg.com/haikufinder-1.1.zip or use github repo.
 
-* 
-*	REQUIRES NLTK, THE NATURAL LANGUAGE TOOLKIT
-*	http://www.nltk.org/download
-*
+Installation requires NLTK and its punkt package. First-time steps
+Unzip main file.
+pip install nltk
+python
+import nltk
+nltk.download('punkt')
+exit()
+python setup.py install
+
+A script to begin processing is located in \scripts
 
 A Python hack to find "haikus" in English text. For the purposes of this
 module, a "haiku" is one or more complete sentences that, together, can be
-broken into groups of 5, 7, and 5 syllables. Each canididate haiku line, 
+broken into groups of 5, 7, and 5 syllables. Each candidate haiku line, 
 and then the entire haiku, has to make it through a few heuristics to 
 filter out constructions that are likely to scan awkwardly (like verb 
 phrases split across lines). Since this code doesn't really try to 

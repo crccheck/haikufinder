@@ -9,6 +9,6 @@ setup(name='haikufinder',
       package_data={'haikufinder': ['cmudict/cmudict.pickle','cmudict/custom.dict',
                                     'data/awkward_breaks','data/awkward_ends','data/awkward_starts',
                                     ]},
-      scripts=['scripts/findhaikus'],
+      scripts=['scripts/findhaikus.py'],
       data_files=[('.', ['license.txt'])],
       )

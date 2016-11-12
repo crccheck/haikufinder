@@ -1,8 +1,10 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import unicode_literals
+
 from unittest import TestCase
 
-from . import LineSyllablizer, count_syllables
+from . import LineSyllablizer, count_syllables, syllables
 
 
 class LineSyllablizerTest(TestCase):
@@ -47,3 +49,8 @@ def test_count_syllables():
     ]
     for phrase, count in counts:
         assert count_syllables(phrase) == count
+
+
+def test_syllables_dictionary_count():
+    """Document the number of entries. When it changes, just update this number."""
+    assert len(syllables) == 123563

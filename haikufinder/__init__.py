@@ -37,18 +37,20 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
+from __future__ import unicode_literals
 from __future__ import with_statement
-import nltk
-import re
-import pickle
 import os.path
+import pickle
+import re
+
+import nltk
 
 
-def file(relpath):
-    return os.path.join(os.path.dirname(__file__), relpath)
+BASE_DIR = os.path.dirname(__file__)
+
 
 def read_alternates(which):
-    with open(file('data/awkward_%s'%which), 'r') as baddies:
+    with open(os.path.join(BASE_DIR, 'data/awkward_%s' % which), 'r') as baddies:
         return '|'.join([e.strip() for e in baddies.readlines() if len(e.strip()) > 0])
 
 single_line_filters = [
@@ -60,7 +62,7 @@ single_line_filters.append(re.compile(r'\b(?:%s)$'%read_alternates('ends'), re.I
 
 first_word_comma = re.compile(r'^\s*[a-z]\w*,')
 
-with open(file('data/awkward_breaks'), 'r') as breaks:
+with open(os.path.join(BASE_DIR, 'data/awkward_breaks'), 'r') as breaks:
     alts = '|'.join([r'\b%s\b' % ('\n'.join(e.strip().split())) for e in breaks.readlines() if len(e.strip()) > 0]
                     + ['[^\'".?!;:,]\n[a-z]+(?:\'[a-z]+)?[".?!;:]+.',
                        '"\S+\n\S+"',
@@ -68,10 +70,10 @@ with open(file('data/awkward_breaks'), 'r') as breaks:
     break_filter = re.compile(alts, re.IGNORECASE)
 
 # load the syllable-count dictionary
-with open(file('cmudict/cmudict.pickle'), 'rb') as p:
-    syllables = pickle.load(p)
-with open(file('cmudict/custom.dict'), 'r') as p:
-    for line in p.readlines():
+with open(os.path.join(BASE_DIR, 'cmudict/cmudict.pickle'), 'rb') as fp:
+    syllables = pickle.load(fp)
+with open(os.path.join(BASE_DIR, 'cmudict/custom.dict'), 'r') as fp:
+    for line in fp.readlines():
         if not len(line):
             continue
         (word, count) = line.split()
@@ -240,9 +242,6 @@ class LineSyllablizer:
     def seek_eol(self):
         if self.index != len(self.words):
             raise Nope
-
-    def bad_split(self, n):
-        return awkward_in_front_without_punct_before.search(self.lines[n]) and not self.lines[n - 1][-1] in (',', ';', '-')
 
     def find_haiku(self):
         self.seek(5)

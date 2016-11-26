@@ -46,6 +46,9 @@ def test_count_syllables():
         ('a', 1),
         ('the day, Kerr’s son put a golf ball', 8),
         ('We’re somewhere in between.', 6),
+        ('those kids—Charles, Edward, Anne', 6),  # em dash
+        ('those kids-Charles, Edward, Anne', 6),
+        ('those_kids_Charles,_Edward,_Anne', 6),
     ]
     for phrase, count in counts:
         assert count_syllables(phrase) == count

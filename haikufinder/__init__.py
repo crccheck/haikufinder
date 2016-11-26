@@ -81,6 +81,7 @@ with open(os.path.join(BASE_DIR, 'cmudict/custom.dict'), 'r') as fp:
 
 # Use the NLTK to determine sentence boundaries.
 sentence_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+word_tokenizer = re.compile(r'\s+|[—\-_]')
 
 number_syllables = (
                 #   0  1  2  3  4  5  6  7  8  9
@@ -125,7 +126,9 @@ def replace_smart_quotes(str):
 
 class LineSyllablizer:
     def __init__(self, line, unknown_word_handler=None):
-        self.words = line.split()
+        # TODO tokenize smarter:
+        # http://www.nltk.org/api/nltk.tokenize.html#nltk.tokenize.regexp.WordPunctTokenizer
+        self.words = word_tokenizer.split(line)
         self.index = 0
         self.lines = []
         self.unknown_word_handler = unknown_word_handler
@@ -157,12 +160,6 @@ class LineSyllablizer:
 
         if '&' in word and len(word) > 1:
             return 1 + sum(self._count_syllables(w) for w in word.split('&'))
-
-        if '-' in word:
-            return sum(self._count_syllables(w) for w in word.split('-'))
-
-        if '_' in word:
-            return sum(self._count_syllables(w) for w in word.split('_'))
 
         if word.endswith("'S"):
             return self._count_syllables(word[:-2])
